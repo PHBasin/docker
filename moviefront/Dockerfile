@@ -6,5 +6,5 @@
 
 # Stage 2, Build Nginx backend
 FROM nginx:latest
-COPY . /usr/share/nginx/html
+COPY ./movie-app /usr/share/nginx/html
 COPY movieapp.conf /etc/nginx/conf.d/movieapp.conf
