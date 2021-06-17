@@ -10,10 +10,10 @@ services:
       POSTGRES_USER: movie
       POSTGRES_PASSWORD: password
       POSTGRES_DB: dbmovie
-  app:
+  api:
     container_name: postgres_app
     build:
-      context: ./movieapp
+      context: ./movieapi
     ports:
       - "8081:8080"
   front:
