@@ -10,13 +10,16 @@ function stop_docker {
 }
 
 function start_docker {
-  docker-compose up -d --build db
-  docker-compose up -d --build api
-  docker-compose up -d --build front
+  docker-compose build db &> /dev/null
+  docker-compose up -d db
+  docker-compose build api &> /dev/null
+  docker-compose up -d api
+  docker-compose build front &> /dev/null
+  docker-compose up -d front
 }
 
 function change_db_api {
-  rm db_scripts/*ddl.sql
+  rm db_scripts/*ddl.sql &> /dev/null
   cp dbmovie/$1 db_scripts/
   previous_jdbc=$(head -1 movieapi/application.properties | cut -c2-)
   sed -i "s/$previous_jdbc/$2/g" movieapi/application.properties
@@ -53,26 +56,34 @@ else
   echo ' 3    [ ]        MySQL'
 fi
 
-stop_docker "$running_database"
 echo 'Appuyez sur Entrée pour conserver la valeur par défaut [*]'
-read -p 'ou choisissez le numéro sélectionné : ' database
+echo 'Appuyez sur une autre touche pour supprimer les conteneurs'
+read -p 'ou choisissez le numéro sélectionné pour changer de db : ' database
 
 case "$database" in
 	1) echo -e "\nAlternative MariaDB sélectionnée"
      database="mariadb"
+     stop_docker "$running_database"
      change_db_api "my_cine_ddl.sql" "$database"
      change_docker "$database"
      start_docker ;;
 	2) echo -e "\nAlternative PostgreSQL sélectionnée"
      database="postgres"
+     stop_docker "$running_database"
      change_db_api "pg_cine_ddl.sql" "postgresql"
      change_docker "$database"
      start_docker ;;
 	3) echo -e "\nAlternative MySQL sélectionnée"
      database="mysql"
+     stop_docker "$running_database"
      change_db_api "my_cine_ddl.sql" "$database"
      change_docker "$database"
      start_docker ;;
+ '') echo -e "\nAdieu !"
+     exit -1;;
   *) echo -e "\nAlternative inconnue : $database"
+     echo -ne "Je supprime les conteneurs ... "
+     stop_docker "$running_database"
+     echo "passez une bonne journée !"
 	   exit -1;;
 esac
