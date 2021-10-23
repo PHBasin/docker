@@ -1,12 +1,9 @@
 #!/bin/bash
 
 function stop_docker {
-  docker stop $1_front &> /dev/null
-  docker stop $1_api &> /dev/null
-  docker stop $1_db &> /dev/null
-  docker rm $1_front &> /dev/null
-  docker rm $1_api &> /dev/null
-  docker rm $1_db &> /dev/null
+  docker rm -f $1_front &> /dev/null
+  docker rm -f $1_api &> /dev/null
+  docker rm -f $1_db &> /dev/null
 }
 
 function start_docker {
