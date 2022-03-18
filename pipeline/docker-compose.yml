@@ -3,10 +3,7 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:latest
     restart: always
-    hostname: 'gitlab.example.com'
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.example.com'
+    hostname: 'localhost'
     ports:
       - 80:80
       - 443:443
@@ -17,6 +14,9 @@ services:
       - ${PWD}/logs:/var/log/gitlab
       - ${PWD}/data:/var/opt/gitlab
     shm_size: '256m'
+    networks:
+      default:
+        ipv4_address: 172.20.0.3
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -29,3 +29,6 @@ services:
     volumes:
       - /home/phbasin/docker/pipeline/jenkins_compose/jenkins_configuration:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+        ipv4_address: 172.20.0.2
