@@ -1,5 +1,4 @@
-pipeline/config/*
 pipeline/data/*
+pipeline/config/*
 pipeline/logs/*
 pipeline/jenkins_compose/*
-pipeline/gitlab/*
