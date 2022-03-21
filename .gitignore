@@ -2,3 +2,4 @@ pipeline/config/*
 pipeline/data/*
 pipeline/logs/*
 pipeline/jenkins_compose/*
+pipeline/gitlab/*
