@@ -3,7 +3,7 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:latest
     restart: always
-    hostname: 'localhost'
+    hostname: '172.20.0.3'
     ports:
       - 80:80
       - 443:443
